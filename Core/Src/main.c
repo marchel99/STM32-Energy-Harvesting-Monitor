@@ -163,7 +163,7 @@ int main(void)
         if (battery_voltage > 0)
             {
               // Formatowanie i wyświetlanie napięcia baterii
-              swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.2fV", battery_voltage);
+              swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4fV", battery_voltage);
               hagl_put_text(voltage_buffer, 15, 40, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
             }
         else
@@ -188,6 +188,7 @@ int main(void)
               // Wyświetlanie informacji o błędzie
               hagl_put_text(L"Błąd odczytu SoC!", 15, 50, WHITE, font6x9);
             }
+
 
 
 
