@@ -39,7 +39,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,13 +74,14 @@ uint16_t test_image[64 * 64];
 
 int __io_putchar(int ch)
 {
-    if (ch == '\n') {
-        uint8_t ch2 = '\r';
-        HAL_UART_Transmit(&huart2, &ch2, 1, HAL_MAX_DELAY);
-    }
+  if (ch == '\n')
+  {
+    uint8_t ch2 = '\r';
+    HAL_UART_Transmit(&huart2, &ch2, 1, HAL_MAX_DELAY);
+  }
 
-    HAL_UART_Transmit(&huart2, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
-    return 1;
+  HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
+  return 1;
 }
 
 /* USER CODE END 0 */
@@ -213,34 +213,15 @@ int main(void)
       hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
     }
 
-
-
-  
     char uart_buffer[64];
 
     // Formatuj dane do CSV
 
-    float arka=20;
+    float arka = 20;
     snprintf(uart_buffer, sizeof(uart_buffer), "OK %.4f TEST\r\n", arka);
 
-    // Wysyłaj dane przez UART
-    //HAL_UART_Transmit(&huart2, (uint8_t *)uart_buffer, strlen(uart_buffer), HAL_MAX_DELAY);
 
-
-
-
-
-
-
-
-float pi = 3.14f;
-printf("Liczba pi to: %f\n", pi);
-
-
-
-
-
-
+    printf("Liczba pi to: %.4f\n", battery_voltage);
 
     lcd_copy();
     HAL_Delay(1000);
