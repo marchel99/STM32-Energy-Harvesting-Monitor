@@ -47,3 +47,5 @@
 37	1225	7241124301929941	CMakeFiles/CC.dir/Core/Src/max.c.obj	472e572baef3f03e
 2	367	7241133638054915	build.ninja	386a3580f651e8ae
 34	679	7241069758049875	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c.obj	2cef3b498b8743e
+4	396	7241136033612668	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
+397	911	7241136037871883	CC.elf	aad9777bfa4226c0

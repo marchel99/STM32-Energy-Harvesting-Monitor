@@ -39,7 +39,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -75,7 +74,6 @@ uint16_t test_image[64 * 64];
 
 int __io_putchar(int ch)
 {
-<<<<<<< HEAD
   if (ch == '\n')
   {
     uint8_t ch2 = '\r';
@@ -84,15 +82,6 @@ int __io_putchar(int ch)
 
   HAL_UART_Transmit(&huart2, (uint8_t *)&ch, 1, HAL_MAX_DELAY);
   return 1;
-=======
-    if (ch == '\n') {
-        uint8_t ch2 = '\r';
-        HAL_UART_Transmit(&huart2, &ch2, 1, HAL_MAX_DELAY);
-    }
-
-    HAL_UART_Transmit(&huart2, (uint8_t*)&ch, 1, HAL_MAX_DELAY);
-    return 1;
->>>>>>> c805b20cea5199006d695ff08a87e40df1262fa9
 }
 
 /* USER CODE END 0 */
@@ -181,8 +170,6 @@ int main(void)
 
     float battery_voltage = read_voltage(&hi2c1);
     wchar_t voltage_buffer[32]; // Bufor na napięcie baterii
-<<<<<<< HEAD
-=======
 
     if (battery_voltage > 0)
     {
@@ -225,92 +212,16 @@ int main(void)
       // Wyświetlanie informacji o błędzie
       hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
     }
->>>>>>> c805b20cea5199006d695ff08a87e40df1262fa9
-
-    if (battery_voltage > 0)
-    {
-      // Formatowanie i wyświetlanie napięcia baterii
-      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4fV", battery_voltage);
-      hagl_put_text(voltage_buffer, 15, 40, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-    }
-    else
-    {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu napięcia!", 15, 40, WHITE, font6x9);
-    }
-
-<<<<<<< HEAD
-    float battery_soc = read_soc(&hi2c1);
-    wchar_t soc_buffer[32]; // Bufor na procent naładowania baterii
-
-    if (battery_soc >= 0)
-    {
-      // Formatowanie i wyświetlanie stanu naładowania baterii
-      swprintf(soc_buffer, sizeof(soc_buffer), L"Naładowanie: %.2f%%", battery_soc);
-      hagl_put_text(soc_buffer, 15, 50, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-    }
-    else
-    {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu SoC!", 15, 50, WHITE, font6x9);
-    }
-=======
-
-  
-    char uart_buffer[64];
-
-    // Formatuj dane do CSV
-
-    float arka=20;
-    snprintf(uart_buffer, sizeof(uart_buffer), "OK %.4f TEST\r\n", arka);
-
-    // Wysyłaj dane przez UART
-    //HAL_UART_Transmit(&huart2, (uint8_t *)uart_buffer, strlen(uart_buffer), HAL_MAX_DELAY);
->>>>>>> c805b20cea5199006d695ff08a87e40df1262fa9
-
-    uint8_t ic_version = read_ic_version(&hi2c1);
-    wchar_t version_buffer[32]; // Bufor na wersję układu IC
-
-    if (ic_version != 0xFF)
-    {
-      // Formatowanie i wyświetlanie wersji układu IC
-      swprintf(version_buffer, sizeof(version_buffer), L"Wersja IC: 0x%02X", ic_version);
-      hagl_put_text(version_buffer, 15, 60, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-    }
-    else
-    {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
-    }
 
     char uart_buffer[64];
 
-<<<<<<< HEAD
     // Formatuj dane do CSV
 
     float arka = 20;
     snprintf(uart_buffer, sizeof(uart_buffer), "OK %.4f TEST\r\n", arka);
 
 
-=======
-
-
-
-
-float pi = 3.14f;
-printf("Liczba pi to: %f\n", pi);
->>>>>>> c805b20cea5199006d695ff08a87e40df1262fa9
-
-
-
-
- 
-
-
-    printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
-
-
-    printf(" | Voltage: %.4f\n", battery_voltage);
+    printf("Liczba pi to: %.4f\n", battery_voltage);
 
     lcd_copy();
     HAL_Delay(1000);
