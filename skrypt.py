@@ -2,21 +2,20 @@ import serial
 import csv
 from datetime import datetime
 
-# Ustawienia portu szeregowego
+
 port = 'COM8'
 baud_rate = 115200
 timeout = 1  # Timeout w sekundach dla operacji odczytu
 
-# Ścieżka do pliku CSV
+
 csv_filename = 'output.csv'
 
-# Funkcja do odczytu danych z UART i zapisu do pliku CSV
+
 def log_data_to_csv(port, baud_rate, timeout, csv_filename):
     with serial.Serial(port, baud_rate, timeout=timeout) as ser, open(csv_filename, 'w', newline='') as csvfile:
         csv_writer = csv.writer(csvfile)
         csv_writer.writerow(['Time', 'Voltage'])  # Nagłówek CSV
         csvfile.flush()  # Opróżnienie bufora
-        
         print(f"Connected to {port}. Reading data...")
         
         try:
@@ -36,5 +35,5 @@ def log_data_to_csv(port, baud_rate, timeout, csv_filename):
         except Exception as e:
             print(f"An error occurred: {e}")
 
-# Wywołanie funkcji
+
 log_data_to_csv(port, baud_rate, timeout, csv_filename)
