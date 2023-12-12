@@ -174,6 +174,7 @@ int main(void)
 
 
 
+
         float battery_soc = read_soc(&hi2c1);
         wchar_t soc_buffer[32]; // Bufor na procent naładowania baterii
 
