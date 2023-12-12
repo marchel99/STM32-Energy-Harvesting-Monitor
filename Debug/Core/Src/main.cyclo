@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 main.c:75:5:__io_putchar	2
 main.c:93:5:main	4
 main.c:250:6:SystemClock_Config	4
 main.c:304:6:Error_Handler	1
+=======
+main.c:76:5:__io_putchar	2
+main.c:93:5:main	4
+main.c:259:6:SystemClock_Config	4
+main.c:313:6:Error_Handler	1
+>>>>>>> c805b20cea5199006d695ff08a87e40df1262fa9
