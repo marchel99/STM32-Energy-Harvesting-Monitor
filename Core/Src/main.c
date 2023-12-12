@@ -174,7 +174,7 @@ int main(void)
     if (battery_voltage > 0)
     {
       // Formatowanie i wyświetlanie napięcia baterii
-      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4fV", battery_voltage);
+      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.20fV", battery_voltage);
       hagl_put_text(voltage_buffer, 15, 40, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
     }
     else
@@ -213,15 +213,12 @@ int main(void)
       hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
     }
 
-    char uart_buffer[64];
-
     // Formatuj dane do CSV
 
-    float arka = 20;
-    snprintf(uart_buffer, sizeof(uart_buffer), "OK %.4f TEST\r\n", arka);
 
 
-    printf("Liczba pi to: %.4f\n", battery_voltage);
+    printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
+    printf(" | Voltage: %.20f\n", battery_voltage);
 
     lcd_copy();
     HAL_Delay(1000);
