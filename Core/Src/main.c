@@ -221,7 +221,17 @@ int main(void)
     snprintf(uart_buffer, sizeof(uart_buffer), "OK %.4f TEST\r\n", arka);
 
 
-    printf("Liczba pi to: %.4f\n", battery_voltage);
+
+
+
+
+ 
+
+
+    printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
+
+
+    printf(" | Voltage: %.4f\n", battery_voltage);
 
     lcd_copy();
     HAL_Delay(1000);
