@@ -1,1 +1,3 @@
-../Core/Src/max.c:5:7:read_voltage	48	static
+../Core/Src/max.c:4:7:read_voltage	48	static
+../Core/Src/max.c:27:7:read_soc	40	static
+../Core/Src/max.c:48:9:read_ic_version	40	static

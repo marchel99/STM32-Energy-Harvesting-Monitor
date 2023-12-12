@@ -146,7 +146,7 @@ int main(void)
 
   while (1)
   {
-
+//while
     RTC_TimeTypeDef time;
     RTC_DateTypeDef date;
     HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
