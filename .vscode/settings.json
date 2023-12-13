@@ -4,5 +4,6 @@
   "files.associations": {
     "wchar.h": "c",
     "spi.h": "c"
-  }
+  },
+  "clang-format.executable": "C:/Program Files/LLVM/bin/clang-format.exe"
 }
