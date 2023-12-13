@@ -212,103 +212,109 @@ int main(void)
       hagl_put_text(L"SoC reading error!", 15, 40, WHITE, font6x9);
     }
 
-    uint8_t ic_version = read_ic_version(&hi2c1);
-    wchar_t version_buffer[32]; // Bufor na wersję układu IC
 
+    uint8_t ic_version = read_ic_version(&hi2c1);
+    wchar_t version_buffer[32]; // Buffer for IC version information
+
+    // Check if the IC version read is valid
     if (ic_version != 0xFF)
     {
-      // Formatowanie i wyświetlanie wersji układu IC
-      swprintf(version_buffer, sizeof(version_buffer), L"Wersja IC: 0x%02X", ic_version);
-      hagl_put_text(version_buffer, 15, 80, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      // Format and display the IC version
+      swprintf(version_buffer, sizeof(version_buffer), L"IC Version: 0x%02X", ic_version);
+      hagl_put_text(version_buffer, 15, 80, WHITE, font6x9); // Adjust text position as necessary
     }
     else
     {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu wersji IC!", 15, 80, WHITE, font6x9);
+      // Display error message if IC version reading fails
+      hagl_put_text(L"IC version read error!", 15, 80, WHITE, font6x9);
     }
 
-    float resistance = 00.0f; // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
-    wchar_t current_buffer[64]; // Bufor na prąd
-    wchar_t shunt_buffer[32]; // Bufor na opis bocznika
+    float resistance = 00.0f; // Shunt value: 0 Ohm, indicating no shunt present
+    wchar_t current_buffer[64]; // Buffer for current measurement
+    wchar_t shunt_buffer[32]; // Buffer for shunt description
 
-    // Sprawdzanie czy bocznik jest obecny
+    // Verify the presence of a shunt
     if (resistance > 0.0f)
     {
-      // Formatowanie opisu bocznika
+      // Format the shunt description
       if (resistance < 1000.0f)
       {
-        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.0f Ω", resistance);
+        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Shunt: %.0f Ω", resistance);
       }
       else
       {
-        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.1f kΩ", resistance / 1000.0f);
+        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Shunt: %.1f kΩ", resistance / 1000.0f);
       }
     }
     else
     {
-      // Jeśli bocznik jest równy 0, wyświetla "BRAK"
-      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: BRAK");
+      // Display "NONE" if no shunt is present
+      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Shunt: NONE");
     }
 
     float battery_current = read_current(&hi2c1, resistance);
 
-    // Sprawdzanie wartości prądu i formatowanie wyniku
+    // Check the current value and format the result
     if (battery_current != 0 && resistance > 0.0f)
     {
+      // Display in mA if the current is less than 1 A
       if (battery_current < 1.0)
-      { // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
-        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
+      {
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Current: %.2f mA", battery_current * 1000);
       }
+      // Otherwise, display in A
       else
-      { // W przeciwnym razie wyświetl w A
-        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
+      {
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Current: %.2f A", battery_current);
       }
     }
     else
     {
-      // Jeśli bocznik jest równy 0 lub prąd wynosi 0, wyświetla "BRAK BOCZNIKA"
-      swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: BRAK BOCZNIKA");
+      // Display "NO SHUNT" if shunt value is 0 or current is 0
+      swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Current: NO SHUNT");
     }
 
+    // Display current and shunt information on the screen
     hagl_put_text(current_buffer, 15, 60, WHITE, font6x9);
-    hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9); // Wyświetlanie informacji o boczniku
+    hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9);
 
     uint8_t vreset_value;
     HAL_StatusTypeDef status;
 
-    // Próba odczytu wartości rejestru VRESET
+    // Attempt to read the VRESET register value
     status = read_reset(&hi2c1, &vreset_value);
 
-    wchar_t vreset_buffer[32]; // Bufor na wartość rejestru VRESET
+    wchar_t vreset_buffer[32]; // Buffer for the VRESET register value
 
-    // Sprawdzenie, czy operacja się powiodła
+    // Check if the operation was successful
     if (status == HAL_OK)
     {
-      // Formatowanie i wyświetlanie wartości rejestru VRESET
-
+      // Format and display the VRESET register value
       swprintf(vreset_buffer, sizeof(vreset_buffer) / sizeof(vreset_buffer[0]), L"VRESET: %u", vreset_value);
-      hagl_put_text(vreset_buffer, 15, 80, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      hagl_put_text(vreset_buffer, 15, 80, WHITE, font6x9); // Adjust text position as necessary
     }
     else
     {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu rejestru VRESET!", 15, 80, WHITE, font6x9);
+      // Display error message if VRESET register read fails
+      hagl_put_text(L"VRESET register read error!", 15, 80, WHITE, font6x9);
     }
-    uint8_t valrt_min = read_valrt_min(&hi2c1);
-    wchar_t valrt_min_buffer[32]; // Bufor na wartość minimalnego alertu napięcia
 
-    // Sprawdzenie, czy odczytana wartość nie wskazuje na błąd
+    uint8_t valrt_min = read_valrt_min(&hi2c1);
+    wchar_t valrt_min_buffer[32]; // Buffer for the VALRT.MIN value
+
+    // Verify that the read value is not an error code
     if (valrt_min != 0xFF)
     {
-      // Formatowanie i wyświetlanie wartości VALRT.MIN
+      // Format and display the VALRT.MIN value
       swprintf(valrt_min_buffer, sizeof(valrt_min_buffer) / sizeof(valrt_min_buffer[0]), L"VALRT.MIN: %u", valrt_min);
-      hagl_put_text(valrt_min_buffer, 15, 90, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      hagl_put_text(valrt_min_buffer, 15, 90, WHITE, font6x9); // Adjust text position as necessary
     }
     else
     {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu rejestru VALRT.MIN!", 15, 90, WHITE, font6x9);
+      // Display error message if VALRT.MIN register read fails
+      hagl_put_text(L"VALRT.MIN register read error!", 15, 90, WHITE, font6x9);
     }
+
 
     printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
     printf(" | Voltage: %.8f\n", battery_voltage);

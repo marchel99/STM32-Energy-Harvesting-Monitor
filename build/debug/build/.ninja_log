@@ -5,9 +5,9 @@
 79	1281	7241124302561365	CMakeFiles/CC.dir/Core/Src/stm32l4xx_it.c.obj	d846e76fb40e5569
 77	539	7238359292649681	CMakeFiles/CC.dir/Core/Src/syscalls.c.obj	c119e430221712d4
 65	978	7238359292804749	CMakeFiles/CC.dir/Core/Src/sysmem.c.obj	68881a9f7a1a2107
-2222	2608	7238359313867277	CMakeFiles/CC.dir/hagl/src/rgb888.c.obj	9f6093f137931aa1
 95	1271	7241124302180940	CMakeFiles/CC.dir/Core/Src/system_stm32l4xx.c.obj	653337d24309cfa6
 1013	2464	7241124315855383	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_flash_ramfunc.c.obj	e3dec7312a5bbde8
+2222	2608	7238359313867277	CMakeFiles/CC.dir/hagl/src/rgb888.c.obj	9f6093f137931aa1
 117	1481	7241124305296221	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_dma_ex.c.obj	5ac7a7ccae358516
 68	1237	7241124302170935	CMakeFiles/CC.dir/Core/Src/stm32l4xx_hal_msp.c.obj	be549b2a2b701442
 59	1342	7241124304004271	CMakeFiles/CC.dir/Core/Src/spi.c.obj	86e8a09401412cfe
@@ -31,8 +31,8 @@
 1495	2981	7241124321261591	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_tim.c.obj	ff9dd81878cdd1e3
 20	1642	7241124306748070	CMakeFiles/CC.dir/Core/Src/lcd.c.obj	98f7110eec3b31f2
 1246	3171	7241124323717491	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c.c.obj	743d3f0e3284e234
-5	462	7242075080210596	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
-463	1098	7242075085057479	CC.elf	aad9777bfa4226c0
+5	392	7242116321734325	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
+392	940	7242116325933028	CC.elf	aad9777bfa4226c0
 39	476	7238359292167968	CMakeFiles/CC.dir/Core/Src/logo.c.obj	96319522c9610237
 2465	3514	7241124327385692	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_rtc_ex.c.obj	515c4d02aa0c9f1d
 1582	2110	7238359308351961	CMakeFiles/CC.dir/hagl/src/bitmap.c.obj	f18ec87b5b3e23b6
@@ -45,11 +45,7 @@
 29	1246	7241124302311908	CMakeFiles/CC.dir/Core/Src/i2c.c.obj	f36b0bd986b6a6f7
 1272	2510	7241124316850782	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_i2c_ex.c.obj	fcebc1cda23c1726
 17	556	7242075070885302	CMakeFiles/CC.dir/Core/Src/max.c.obj	472e572baef3f03e
-2	367	7242108562466238	build.ninja	386a3580f651e8ae
+2	367	7242138835667864	build.ninja	386a3580f651e8ae
 34	679	7241069758049875	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c.obj	2cef3b498b8743e
-4	449	7242108704534364	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
-450	1012	7242108708869618	CC.elf	aad9777bfa4226c0
-3	431	7242112827744025	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
-432	1058	7242112832879047	CC.elf	aad9777bfa4226c0
-5	392	7242116321734325	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
-392	940	7242116325933028	CC.elf	aad9777bfa4226c0
+4	1041	7242138849847816	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
+1042	1864	7242138855709699	CC.elf	aad9777bfa4226c0

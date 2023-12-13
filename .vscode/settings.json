@@ -5,5 +5,7 @@
     "wchar.h": "c",
     "spi.h": "c"
   },
-  "clang-format.executable": "C:/Program Files/LLVM/bin/clang-format.exe"
+  "clang-format.executable": "C:/Program Files/LLVM/bin/clang-format.exe",
+  "editor.formatOnSave": true
+
 }
