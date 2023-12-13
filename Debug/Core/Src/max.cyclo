@@ -1,3 +1,4 @@
-max.c:4:7:read_voltage	2
-max.c:27:7:read_soc	2
-max.c:48:9:read_ic_version	2
+max.c:5:7:read_voltage	2
+max.c:27:7:read_current	3
+max.c:54:7:read_soc	2
+max.c:74:9:read_ic_version	2

@@ -216,7 +216,7 @@ int main(void)
 
 
 
-    float resistance = 1000.0f; // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
+    float resistance = 00.0f; // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
     wchar_t current_buffer[64]; // Bufor na prąd
     wchar_t shunt_buffer[32];   // Bufor na opis bocznika
 

@@ -5,7 +5,7 @@
 
 
 #define I2C_DEFAULT_ADDRESS 0x36
-
+// Slave address
 
 
 #define REGISTER_VCELL      0x02
