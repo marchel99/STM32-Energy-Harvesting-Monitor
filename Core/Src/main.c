@@ -179,7 +179,7 @@ int main(void)
       {
         // Formatting and displaying battery voltage
         swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4f V", battery_voltage);
-      
+        // Displaying voltage on the screen with given coordinates and font
         hagl_put_text(voltage_buffer, 15, 50, WHITE, font6x9); // Change if needed
       }
     else

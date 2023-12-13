@@ -49,3 +49,5 @@
 34	679	7241069758049875	CMakeFiles/CC.dir/Drivers/STM32L4xx_HAL_Driver/Src/stm32l4xx_hal_uart_ex.c.obj	2cef3b498b8743e
 4	449	7242108704534364	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
 450	1012	7242108708869618	CC.elf	aad9777bfa4226c0
+3	431	7242112827744025	CMakeFiles/CC.dir/Core/Src/main.c.obj	f14ebaecc304d178
+432	1058	7242112832879047	CC.elf	aad9777bfa4226c0
