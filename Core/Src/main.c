@@ -158,10 +158,12 @@ int main(void)
   wchar_t time_buffer[32]; // Bufor na ciąg znaków, musi być wystarczająco duży
 
 
+
+
+  write_valrt_min(&hi2c1, 00000000);
+
   while (1)
   {
-
-
 
     RTC_TimeTypeDef time;
     RTC_DateTypeDef date;
@@ -216,10 +218,7 @@ int main(void)
       hagl_put_text(L"Błąd odczytu wersji IC!", 15, 80, WHITE, font6x9);
     }
 
-
-
-
-    float resistance = 00.0f; // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
+    float resistance = 00.0f;   // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
     wchar_t current_buffer[64]; // Bufor na prąd
     wchar_t shunt_buffer[32];   // Bufor na opis bocznika
 
