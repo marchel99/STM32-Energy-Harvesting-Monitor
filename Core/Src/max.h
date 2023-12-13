@@ -20,6 +20,13 @@
 #define REGISTER_VERSION    0x08
 //
 
+#define VALRT_MIN 0x14
+
+#define VRESET 0x18
+
+
+
+
 float read_voltage(I2C_HandleTypeDef *hi2c);
 
 float read_current(I2C_HandleTypeDef *hi2c, float resistance);
@@ -27,3 +34,5 @@ float read_current(I2C_HandleTypeDef *hi2c, float resistance);
 float read_soc(I2C_HandleTypeDef *hi2c);
 
 uint8_t read_ic_version(I2C_HandleTypeDef *hi2c);
+
+void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value);

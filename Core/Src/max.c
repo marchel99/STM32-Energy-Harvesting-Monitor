@@ -1,6 +1,31 @@
 #include "max.h"
 #include "i2c.h"
 
+//#include <math.h>
+
+
+void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
+{
+    uint8_t data[1];
+    HAL_StatusTypeDef status;
+
+    // Ustawienie wartości rejestrów VALRT.MIN - załóżmy, że adres to 0x14
+    data[0] = valrt_min_value;
+
+    // Wysłanie wartości do rejestru VALRT.MIN
+    // I2C_DEFAULT_ADDRESS powinien zostać zdefiniowany jako adres twojego urządzenia
+    status = HAL_I2C_Mem_Write(hi2c, I2C_DEFAULT_ADDRESS << 1, 0x14, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
+
+    // Sprawdzenie, czy operacja się powiodła
+    if (status != HAL_OK)
+    {
+        // Obsługa błędów
+    }
+}
+
+
+
+
 
 float read_voltage(I2C_HandleTypeDef *hi2c)
 {
@@ -22,7 +47,7 @@ float read_voltage(I2C_HandleTypeDef *hi2c)
     return voltage;
 }
 
-#include <math.h> // Dołącz bibliotekę matematyczną dla nanf
+
 
 float read_current(I2C_HandleTypeDef *hi2c, float resistance)
 {
