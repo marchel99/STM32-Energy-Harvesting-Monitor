@@ -1,4 +1,8 @@
-../Core/Src/max.c:5:7:read_voltage	48	static
-../Core/Src/max.c:27:7:read_current	48	static
-../Core/Src/max.c:54:7:read_soc	40	static
-../Core/Src/max.c:74:9:read_ic_version	40	static
+../Core/Src/max.c:8:6:write_valrt_min	40	static
+../Core/Src/max.c:31:6:write_reset	40	static
+../Core/Src/max.c:51:19:read_reset	40	static
+../Core/Src/max.c:83:9:read_valrt_min	40	static
+../Core/Src/max.c:108:7:read_voltage	48	static
+../Core/Src/max.c:131:7:read_current	48	static
+../Core/Src/max.c:161:7:read_soc	40	static
+../Core/Src/max.c:184:9:read_ic_version	40	static

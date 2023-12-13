@@ -38,3 +38,8 @@ uint8_t read_ic_version(I2C_HandleTypeDef *hi2c);
 void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value);
 
 uint8_t read_valrt_min(I2C_HandleTypeDef *hi2c);
+
+
+void write_reset(I2C_HandleTypeDef *hi2c, uint8_t reset_value);
+HAL_StatusTypeDef read_reset(I2C_HandleTypeDef *hi2c, uint8_t *reset_value);
+

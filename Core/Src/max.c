@@ -1,7 +1,6 @@
 #include "max.h"
 #include "i2c.h"
-
-// #include <math.h>
+#include <math.h>
 
 
 
@@ -24,6 +23,59 @@ void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
         // Obsługa błędów
     }
 }
+
+
+
+
+
+void write_reset(I2C_HandleTypeDef *hi2c, uint8_t reset_value)
+{
+    uint8_t data[1];
+    HAL_StatusTypeDef status;
+
+   
+    data[0] = reset_value;
+
+    // Wysłanie wartości do rejestru VRESET
+
+    status = HAL_I2C_Mem_Write(hi2c, I2C_DEFAULT_ADDRESS << 1, 0x18, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
+
+    // Sprawdzenie, czy operacja się powiodła
+    if (status != HAL_OK)
+    {
+        // Obsługa błędów
+    }
+}
+
+
+HAL_StatusTypeDef read_reset(I2C_HandleTypeDef *hi2c, uint8_t *reset_value)
+{
+    HAL_StatusTypeDef status;
+    
+    // Przygotowanie bufora odbiorczego dla wartości z rejestru VRESET
+    uint8_t data[1] = {0};
+
+    // Odczytanie wartości z rejestru VRESET
+    status = HAL_I2C_Mem_Read(hi2c, I2C_DEFAULT_ADDRESS << 1, 0x18, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
+
+    // Sprawdzenie, czy operacja się powiodła
+    if (status == HAL_OK)
+    {
+        // Jeśli odczyt się powiódł, przypisanie wartości do przekazanego wskaźnika
+        *reset_value = data[0];
+    }
+    else
+    {
+        // Obsługa błędów, jeśli potrzebna
+    }
+
+    // Zwrócenie statusu operacji
+    return status;
+}
+
+
+
+
 
 
 
@@ -99,7 +151,7 @@ float read_current(I2C_HandleTypeDef *hi2c, float resistance)
     }
     else
     {
-        return nanf(""); // Return NaN to indicate error in resistance value
+        return nanf(""); 
     }
 }
 
