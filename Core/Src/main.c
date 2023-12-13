@@ -155,61 +155,41 @@ int main(void)
   // Teraz możesz wywołać funkcję hagl_put_text z tym buforem
   hagl_put_text(buffer, 15, 40, WHITE, font6x9);
 
+  wchar_t time_buffer[32]; //  Buffer for storing time information
 
-  wchar_t time_buffer[32]; // Bufor na ciąg znaków, musi być wystarczająco duży
+  // write_valrt_min(&hi2c1, 00000000);  // 0x14 alert register
 
-
-
-
-
-
-
-  //write_valrt_min(&hi2c1, 00000000);  //0x14
-
-
-
-
-  write_reset(&hi2c1, 00000001);  //0x18
-
-
-
-
-
+  write_reset(&hi2c1, 00000001); // 0x18 reset register
 
   while (1)
   {
-
+    // Declaration of time and date structures
     RTC_TimeTypeDef time;
     RTC_DateTypeDef date;
     HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
-    HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN); // Funkcja musi być wywołana po GetTime
+    HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN); 
     swprintf(time_buffer, sizeof(time_buffer), L"Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
 
     hagl_put_text(time_buffer, 15, 20, WHITE, font6x9);
 
-
-
     float battery_voltage = read_voltage(&hi2c1);
-    wchar_t voltage_buffer[32]; // Bufor na napięcie baterii
+    wchar_t voltage_buffer[32]; // Bufor : Voltage
 
     if (battery_voltage > 0)
-    {
-      // Formatowanie i wyświetlanie napięcia baterii
-      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4f V", battery_voltage);
-      hagl_put_text(voltage_buffer, 15, 50, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-    }
+      {
+        // Formatting and displaying battery voltage
+        swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4f V", battery_voltage);
+      
+        hagl_put_text(voltage_buffer, 15, 50, WHITE, font6x9); // Change if needed
+      }
     else
-    {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu napięcia!", 15, 50, WHITE, font6x9);
-    }
-
-
-
-
+      {
+        // Additional code for reading battery state of charge (SoC) might go here
+        hagl_put_text(L"Błąd odczytu napięcia!", 15, 50, WHITE, font6x9);
+      }
 
     float battery_soc = read_soc(&hi2c1);
-    wchar_t soc_buffer[32]; // Bufor na procent naładowania baterii
+    wchar_t soc_buffer[32]; // Bufor SoC
 
     if (battery_soc >= 0)
     {
@@ -261,7 +241,6 @@ int main(void)
       swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: BRAK");
     }
 
-
     float battery_current = read_current(&hi2c1, resistance);
 
     // Sprawdzanie wartości prądu i formatowanie wyniku
@@ -282,81 +261,48 @@ int main(void)
       swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: BRAK BOCZNIKA");
     }
 
-
     hagl_put_text(current_buffer, 15, 60, WHITE, font6x9);
     hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9); // Wyświetlanie informacji o boczniku
 
+    uint8_t vreset_value;
+    HAL_StatusTypeDef status;
 
+    // Próba odczytu wartości rejestru VRESET
+    status = read_reset(&hi2c1, &vreset_value);
 
-uint8_t vreset_value;
-HAL_StatusTypeDef status;
+    wchar_t vreset_buffer[32]; // Bufor na wartość rejestru VRESET
 
-// Próba odczytu wartości rejestru VRESET
-status = read_reset(&hi2c1, &vreset_value);
+    // Sprawdzenie, czy operacja się powiodła
+    if (status == HAL_OK)
+    {
+      // Formatowanie i wyświetlanie wartości rejestru VRESET
 
-wchar_t vreset_buffer[32]; // Bufor na wartość rejestru VRESET
+      swprintf(vreset_buffer, sizeof(vreset_buffer) / sizeof(vreset_buffer[0]), L"VRESET: %u", vreset_value);
+      hagl_put_text(vreset_buffer, 15, 80, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+    }
+    else
+    {
+      // Wyświetlanie informacji o błędzie
+      hagl_put_text(L"Błąd odczytu rejestru VRESET!", 15, 80, WHITE, font6x9);
+    }
+    uint8_t valrt_min = read_valrt_min(&hi2c1);
+    wchar_t valrt_min_buffer[32]; // Bufor na wartość minimalnego alertu napięcia
 
-// Sprawdzenie, czy operacja się powiodła
-if (status == HAL_OK)
-{
-    // Formatowanie i wyświetlanie wartości rejestru VRESET
-
-
-
-    swprintf(vreset_buffer, sizeof(vreset_buffer) / sizeof(vreset_buffer[0]), L"VRESET: %u", vreset_value);
-    hagl_put_text(vreset_buffer, 15, 80, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-}
-else
-{
-    // Wyświetlanie informacji o błędzie
-    hagl_put_text(L"Błąd odczytu rejestru VRESET!", 15, 80, WHITE, font6x9);
-}
-
-
-
-
-uint8_t valrt_min = read_valrt_min(&hi2c1);
-wchar_t valrt_min_buffer[32]; // Bufor na wartość minimalnego alertu napięcia
-
-// Sprawdzenie, czy odczytana wartość nie wskazuje na błąd
-if (valrt_min != 0xFF)
-{
-    // Formatowanie i wyświetlanie wartości VALRT.MIN
-    swprintf(valrt_min_buffer, sizeof(valrt_min_buffer) / sizeof(valrt_min_buffer[0]), L"VALRT.MIN: %u", valrt_min);
-    hagl_put_text(valrt_min_buffer, 15, 90, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
-}
-else
-{
-    // Wyświetlanie informacji o błędzie
-    hagl_put_text(L"Błąd odczytu rejestru VALRT.MIN!", 15, 90, WHITE, font6x9);
-}
-
-
-
-
-
-
-
-
-
-
-
-
+    // Sprawdzenie, czy odczytana wartość nie wskazuje na błąd
+    if (valrt_min != 0xFF)
+    {
+      // Formatowanie i wyświetlanie wartości VALRT.MIN
+      swprintf(valrt_min_buffer, sizeof(valrt_min_buffer) / sizeof(valrt_min_buffer[0]), L"VALRT.MIN: %u", valrt_min);
+      hagl_put_text(valrt_min_buffer, 15, 90, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+    }
+    else
+    {
+      // Wyświetlanie informacji o błędzie
+      hagl_put_text(L"Błąd odczytu rejestru VALRT.MIN!", 15, 90, WHITE, font6x9);
+    }
 
     printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
     printf(" | Voltage: %.8f\n", battery_voltage);
-
-
-
-
-
-
-
-
-
-
-
-
 
     lcd_copy();
     HAL_Delay(1000);
