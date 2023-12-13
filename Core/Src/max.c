@@ -1,7 +1,9 @@
 #include "max.h"
 #include "i2c.h"
 
-//#include <math.h>
+// #include <math.h>
+
+
 
 
 void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
@@ -13,7 +15,7 @@ void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
     data[0] = valrt_min_value;
 
     // Wysłanie wartości do rejestru VALRT.MIN
-    // I2C_DEFAULT_ADDRESS powinien zostać zdefiniowany jako adres twojego urządzenia
+
     status = HAL_I2C_Mem_Write(hi2c, I2C_DEFAULT_ADDRESS << 1, 0x14, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
 
     // Sprawdzenie, czy operacja się powiodła
@@ -23,6 +25,30 @@ void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
     }
 }
 
+
+
+
+uint8_t read_valrt_min(I2C_HandleTypeDef *hi2c)
+{
+    uint8_t valrt_min_value;
+    uint8_t data[1];
+    HAL_StatusTypeDef status;
+
+    // Odczytanie wartości z rejestru VALRT.MIN - załóżmy, że adres to 0x14
+    status = HAL_I2C_Mem_Read(hi2c, (I2C_DEFAULT_ADDRESS << 1) | 0x01, 0x14, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
+
+    if (status != HAL_OK)
+    {
+        // Obsługa błędów, zwróć np. 0xFF, który może oznaczać błąd
+        return 0xFF;
+    }
+
+    // Przypisanie odczytanej wartości do zmiennej
+    valrt_min_value = data[0];
+
+    // Zwrócenie odczytanej wartości
+    return valrt_min_value;
+}
 
 
 
@@ -46,6 +72,7 @@ float read_voltage(I2C_HandleTypeDef *hi2c)
 
     return voltage;
 }
+
 
 
 
@@ -76,6 +103,9 @@ float read_current(I2C_HandleTypeDef *hi2c, float resistance)
     }
 }
 
+
+
+
 float read_soc(I2C_HandleTypeDef *hi2c)
 {
     uint8_t data[2];
@@ -95,6 +125,9 @@ float read_soc(I2C_HandleTypeDef *hi2c)
 
     return soc;
 }
+
+
+
 
 uint8_t read_ic_version(I2C_HandleTypeDef *hi2c)
 {

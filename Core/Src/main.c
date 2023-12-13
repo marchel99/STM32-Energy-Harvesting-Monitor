@@ -158,8 +158,6 @@ int main(void)
   wchar_t time_buffer[32]; // Bufor na ciąg znaków, musi być wystarczająco duży
 
 
-write_valrt_min(&hi2c1, 0x00);
-
   while (1)
   {
 
