@@ -215,60 +215,55 @@ int main(void)
 
 
 
-    float resistance = 1000.0f; // Globalna definicja wartości bocznika
 
-    float battery_current = read_current(&hi2c1, resistance); // Przykładowa wartość bocznika: 1000 Ohm
-    wchar_t current_buffer[64];                               // Zwiększony rozmiar bufora
-    wchar_t shunt_buffer[20];                                 // Bufor na opis bocznika
+    float resistance = 1000.0f; // Wartość bocznika: 0 Ohm, co oznacza brak bocznika
+    wchar_t current_buffer[64]; // Bufor na prąd
+    wchar_t shunt_buffer[32];   // Bufor na opis bocznika
 
-    // Formatowanie opisu bocznika
-    if (resistance < 1000.0f)
+    // Sprawdzanie czy bocznik jest obecny
+    if (resistance > 0.0f)
     {
-      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"B: %.0f Ω", resistance);
+      // Formatowanie opisu bocznika
+      if (resistance < 1000.0f)
+      {
+        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.0f Ω", resistance);
+      }
+      else
+      {
+        swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.1f kΩ", resistance / 1000.0f);
+      }
     }
     else
     {
-      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"B: %.1f kΩ", resistance / 1000.0f);
+      // Jeśli bocznik jest równy 0, wyświetla "BRAK"
+      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: BRAK");
     }
 
+    float battery_current = read_current(&hi2c1, resistance);
 
-if (battery_current != 0)
-{
-  if (battery_current < 1.0)
-  { // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
-    swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
-  }
-  else
-  { // W przeciwnym razie wyświetl w A
-    swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
-  }
-  hagl_put_text(current_buffer, 15, 60, WHITE, font6x9);
+    // Sprawdzanie wartości prądu i formatowanie wyniku
+    if (battery_current != 0 && resistance > 0.0f)
+    {
+      if (battery_current < 1.0)
+      { // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
+      }
+      else
+      { // W przeciwnym razie wyświetl w A
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
+      }
+    }
+    else
+    {
+      // Jeśli bocznik jest równy 0 lub prąd wynosi 0, wyświetla "BRAK BOCZNIKA"
+      swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: BRAK BOCZNIKA");
+    }
 
-  // Formatowanie opisu bocznika i wyświetlanie w nowej linii
-  if (resistance < 1000.0f)
-  {
-    swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.0f Ω", resistance);
-  }
-  else
-  {
-    swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.1f kΩ", resistance / 1000.0f);
-  }
-  hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9); // Wyświetlanie informacji o boczniku
-}
-else
-{
-  // Wyświetlanie informacji o błędzie
-  hagl_put_text(L"Błąd odczytu prądu", 15, 60, WHITE, font6x9);
-}
-
-
-
-
+    hagl_put_text(current_buffer, 15, 60, WHITE, font6x9);
+    hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9); // Wyświetlanie informacji o boczniku
 
     printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
     printf(" | Voltage: %.8f\n", battery_voltage);
-
-
 
     lcd_copy();
     HAL_Delay(1000);
