@@ -2,9 +2,6 @@
 #include "i2c.h"
 #include <math.h>
 
-
-
-
 void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
 {
     uint8_t data[1];
@@ -24,16 +21,11 @@ void write_valrt_min(I2C_HandleTypeDef *hi2c, uint8_t valrt_min_value)
     }
 }
 
-
-
-
-
 void write_reset(I2C_HandleTypeDef *hi2c, uint8_t reset_value)
 {
     uint8_t data[1];
     HAL_StatusTypeDef status;
 
-   
     data[0] = reset_value;
 
     // Wysłanie wartości do rejestru VRESET
@@ -47,11 +39,10 @@ void write_reset(I2C_HandleTypeDef *hi2c, uint8_t reset_value)
     }
 }
 
-
 HAL_StatusTypeDef read_reset(I2C_HandleTypeDef *hi2c, uint8_t *reset_value)
 {
     HAL_StatusTypeDef status;
-    
+
     // Przygotowanie bufora odbiorczego dla wartości z rejestru VRESET
     uint8_t data[1] = {0};
 
@@ -72,13 +63,6 @@ HAL_StatusTypeDef read_reset(I2C_HandleTypeDef *hi2c, uint8_t *reset_value)
     // Zwrócenie statusu operacji
     return status;
 }
-
-
-
-
-
-
-
 
 uint8_t read_valrt_min(I2C_HandleTypeDef *hi2c)
 {
@@ -102,9 +86,6 @@ uint8_t read_valrt_min(I2C_HandleTypeDef *hi2c)
     return valrt_min_value;
 }
 
-
-
-
 float read_voltage(I2C_HandleTypeDef *hi2c)
 {
     uint8_t data[2];
@@ -124,9 +105,6 @@ float read_voltage(I2C_HandleTypeDef *hi2c)
 
     return voltage;
 }
-
-
-
 
 float read_current(I2C_HandleTypeDef *hi2c, float resistance)
 {
@@ -151,12 +129,9 @@ float read_current(I2C_HandleTypeDef *hi2c, float resistance)
     }
     else
     {
-        return nanf(""); 
+        return nanf("");
     }
 }
-
-
-
 
 float read_soc(I2C_HandleTypeDef *hi2c)
 {
@@ -177,9 +152,6 @@ float read_soc(I2C_HandleTypeDef *hi2c)
 
     return soc;
 }
-
-
-
 
 uint8_t read_ic_version(I2C_HandleTypeDef *hi2c)
 {
