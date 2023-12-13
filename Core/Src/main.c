@@ -174,13 +174,13 @@ int main(void)
     if (battery_voltage > 0)
     {
       // Formatowanie i wyświetlanie napięcia baterii
-      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4fV", battery_voltage);
-      hagl_put_text(voltage_buffer, 15, 40, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      swprintf(voltage_buffer, sizeof(voltage_buffer), L"Napięcie: %.4f V", battery_voltage);
+      hagl_put_text(voltage_buffer, 15, 50, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
     }
     else
     {
       // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu napięcia!", 15, 40, WHITE, font6x9);
+      hagl_put_text(L"Błąd odczytu napięcia!", 15, 50, WHITE, font6x9);
     }
 
     float battery_soc = read_soc(&hi2c1);
@@ -190,12 +190,12 @@ int main(void)
     {
       // Formatowanie i wyświetlanie stanu naładowania baterii
       swprintf(soc_buffer, sizeof(soc_buffer), L"Naładowanie: %.2f%%", battery_soc);
-      hagl_put_text(soc_buffer, 15, 50, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      hagl_put_text(soc_buffer, 15, 40, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
     }
     else
     {
       // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu SoC!", 15, 50, WHITE, font6x9);
+      hagl_put_text(L"Błąd odczytu SoC!", 15, 40, WHITE, font6x9);
     }
 
     uint8_t ic_version = read_ic_version(&hi2c1);
@@ -205,43 +205,70 @@ int main(void)
     {
       // Formatowanie i wyświetlanie wersji układu IC
       swprintf(version_buffer, sizeof(version_buffer), L"Wersja IC: 0x%02X", ic_version);
-      hagl_put_text(version_buffer, 15, 60, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
+      hagl_put_text(version_buffer, 15, 80, WHITE, font6x9); // Zmienić położenie tekstu w razie potrzeby
     }
     else
     {
       // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
+      hagl_put_text(L"Błąd odczytu wersji IC!", 15, 80, WHITE, font6x9);
     }
 
 
 
+    float resistance = 1000.0f; // Globalna definicja wartości bocznika
 
-    float battery_current = read_current(&hi2c1, 1000.0f); // 1.0f = 1 Ohm
-    wchar_t current_buffer[32];                         // Bufor
+    float battery_current = read_current(&hi2c1, resistance); // Przykładowa wartość bocznika: 1000 Ohm
+    wchar_t current_buffer[64];                               // Zwiększony rozmiar bufora
+    wchar_t shunt_buffer[20];                                 // Bufor na opis bocznika
 
-    if (battery_current != 0) // Sprawdzenie, czy prąd nie jest równy zero
+    // Formatowanie opisu bocznika
+    if (resistance < 1000.0f)
     {
-      if (battery_current < 1.0) // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
-      {
-        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
-      }
-      else // W przeciwnym razie wyświetl w A
-      {
-        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
-      }
-      hagl_put_text(current_buffer, 15, 70, WHITE, font6x9);
+      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"B: %.0f Ω", resistance);
     }
     else
     {
-      // Wyświetlanie informacji o błędzie
-      hagl_put_text(L"Błąd odczytu prądu", 15, 70, WHITE, font6x9);
+      swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"B: %.1f kΩ", resistance / 1000.0f);
     }
+
+
+if (battery_current != 0)
+{
+  if (battery_current < 1.0)
+  { // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
+    swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
+  }
+  else
+  { // W przeciwnym razie wyświetl w A
+    swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
+  }
+  hagl_put_text(current_buffer, 15, 60, WHITE, font6x9);
+
+  // Formatowanie opisu bocznika i wyświetlanie w nowej linii
+  if (resistance < 1000.0f)
+  {
+    swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.0f Ω", resistance);
+  }
+  else
+  {
+    swprintf(shunt_buffer, sizeof(shunt_buffer) / sizeof(wchar_t), L"Bocznik: %.1f kΩ", resistance / 1000.0f);
+  }
+  hagl_put_text(shunt_buffer, 15, 70, WHITE, font6x9); // Wyświetlanie informacji o boczniku
+}
+else
+{
+  // Wyświetlanie informacji o błędzie
+  hagl_put_text(L"Błąd odczytu prądu", 15, 60, WHITE, font6x9);
+}
+
 
 
 
 
     printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
     printf(" | Voltage: %.8f\n", battery_voltage);
+
+
 
     lcd_copy();
     HAL_Delay(1000);
