@@ -213,7 +213,30 @@ int main(void)
       hagl_put_text(L"Błąd odczytu wersji IC!", 15, 60, WHITE, font6x9);
     }
 
-    // Formatuj dane do CSV
+
+
+
+    float battery_current = read_current(&hi2c1, 1000.0f); // 1.0f = 1 Ohm
+    wchar_t current_buffer[32];                         // Bufor
+
+    if (battery_current != 0) // Sprawdzenie, czy prąd nie jest równy zero
+    {
+      if (battery_current < 1.0) // Jeśli prąd jest mniejszy niż 1 A, wyświetl w mA
+      {
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f mA", battery_current * 1000);
+      }
+      else // W przeciwnym razie wyświetl w A
+      {
+        swprintf(current_buffer, sizeof(current_buffer) / sizeof(wchar_t), L"Prąd: %.2f A", battery_current);
+      }
+      hagl_put_text(current_buffer, 15, 70, WHITE, font6x9);
+    }
+    else
+    {
+      // Wyświetlanie informacji o błędzie
+      hagl_put_text(L"Błąd odczytu prądu", 15, 70, WHITE, font6x9);
+    }
+
 
 
 
