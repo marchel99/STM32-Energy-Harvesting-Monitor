@@ -101,7 +101,8 @@ int main(void)
 
   /* MCU Configuration--------------------------------------------------------*/
 
-  /* Reset of all peripherals, Initializes the Flash interface and the Systick. */
+  /* Reset of all peripherals, Initializes the Flash interface and the Systick.
+   */
   HAL_Init();
 
   /* USER CODE BEGIN Init */
@@ -140,7 +141,8 @@ int main(void)
 
   /* // RECTANGLE
   for (int i = 0; i < 8; i++) {
-    hagl_draw_rounded_rectangle(2+i, 2+i, 158-i, 126-i, 8-i, rgb565(0, 0, i*16));
+    hagl_draw_rounded_rectangle(2+i, 2+i, 158-i, 126-i, 8-i, rgb565(0, 0,
+  i*16));
   }
 
    */
@@ -169,7 +171,8 @@ int main(void)
     RTC_DateTypeDef date;
     // Retrieve current time from the RTC
     HAL_RTC_GetTime(&hrtc, &time, RTC_FORMAT_BIN);
-    // Retrieve current date from the RTC (date may not be used here but is retrieved for completeness)
+    // Retrieve current date from the RTC (date may not be used here but is
+    // retrieved for completeness)
     HAL_RTC_GetDate(&hrtc, &date, RTC_FORMAT_BIN);
     // Format and assign the current time to the time buffer
     swprintf(time_buffer, sizeof(time_buffer), L"Time: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
@@ -187,7 +190,8 @@ int main(void)
       // Format and display the battery voltage
       swprintf(voltage_buffer, sizeof(voltage_buffer), L"Voltage: %.4f V", battery_voltage);
       // Display the voltage on the screen at the specified coordinates and font
-      hagl_put_text(voltage_buffer, 15, 50, WHITE, font6x9); // Adjust text position as needed
+      hagl_put_text(voltage_buffer, 15, 50, WHITE,
+                    font6x9); // Adjust text position as needed
     }
     else
     {
@@ -204,14 +208,14 @@ int main(void)
     {
       // Format and display the battery's state of charge
       swprintf(soc_buffer, sizeof(soc_buffer), L"Charge: %.2f%%", battery_soc);
-      hagl_put_text(soc_buffer, 15, 40, WHITE, font6x9); // Adjust text position as needed
+      hagl_put_text(soc_buffer, 15, 40, WHITE,
+                    font6x9); // Adjust text position as needed
     }
     else
     {
       // Display an error message if SoC reading fails
       hagl_put_text(L"SoC reading error!", 15, 40, WHITE, font6x9);
     }
-
 
     uint8_t ic_version = read_ic_version(&hi2c1);
     wchar_t version_buffer[32]; // Buffer for IC version information
@@ -221,7 +225,8 @@ int main(void)
     {
       // Format and display the IC version
       swprintf(version_buffer, sizeof(version_buffer), L"IC Version: 0x%02X", ic_version);
-      hagl_put_text(version_buffer, 15, 80, WHITE, font6x9); // Adjust text position as necessary
+      hagl_put_text(version_buffer, 15, 80, WHITE,
+                    font6x9); // Adjust text position as necessary
     }
     else
     {
@@ -291,23 +296,22 @@ int main(void)
     {
       // Format and display the VRESET register value
       swprintf(vreset_buffer, sizeof(vreset_buffer) / sizeof(vreset_buffer[0]), L"VRESET: %u", vreset_value);
-      hagl_put_text(vreset_buffer, 15, 80, WHITE, font6x9); // Adjust text position as necessary
+      hagl_put_text(vreset_buffer, 15, 80, WHITE,
+                    font6x9); // Adjust text position as necessary
     }
     else
-    {
-      // Display error message if VRESET register read fails
+    { // Display error message if VRESET register read fails
       hagl_put_text(L"VRESET register read error!", 15, 80, WHITE, font6x9);
     }
-
     uint8_t valrt_min = read_valrt_min(&hi2c1);
     wchar_t valrt_min_buffer[32]; // Buffer for the VALRT.MIN value
-
-    // Verify that the read value is not an error code
+                                  // Verify that the read value is not an error code
     if (valrt_min != 0xFF)
     {
       // Format and display the VALRT.MIN value
       swprintf(valrt_min_buffer, sizeof(valrt_min_buffer) / sizeof(valrt_min_buffer[0]), L"VALRT.MIN: %u", valrt_min);
-      hagl_put_text(valrt_min_buffer, 15, 90, WHITE, font6x9); // Adjust text position as necessary
+      hagl_put_text(valrt_min_buffer, 15, 90, WHITE,
+                    font6x9); // Adjust text position as necessary
     }
     else
     {
@@ -315,8 +319,10 @@ int main(void)
       hagl_put_text(L"VALRT.MIN register read error!", 15, 90, WHITE, font6x9);
     }
 
-
     printf("Czas: %02d:%02d:%02d", time.Hours, time.Minutes, time.Seconds);
+
+    printf(" | Voltage: %.8f\n", battery_voltage);
+
     printf(" | Voltage: %.8f\n", battery_voltage);
 
     lcd_copy();
@@ -409,8 +415,9 @@ void Error_Handler(void)
 void assert_failed(uint8_t* file, uint32_t line)
 {
   /* USER CODE BEGIN 6 */
-  /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
+  /* User can add his own implementation to report the file name and line
+     number, ex: printf("Wrong parameters value: file %s on line %d\r\n", file,
+     line) */
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
