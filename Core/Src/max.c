@@ -126,4 +126,61 @@ float read_current(I2C_HandleTypeDef* hi2c, float resistance)
     return -1.0f; // Indicate error with a negative value
   }
 
-  // Calculate
+  // Assembles the raw voltage value from two data bytes
+  raw_voltage = (data[0] << 8) | data[1];
+
+  // Converts the raw voltage to actual voltage using the LSB value
+  voltage = raw_voltage * 78.125e-6; // Each Least Significant Bit (LSB)
+
+  if (resistance > 0)
+  {
+    current = voltage / resistance; // Ohm's Law: I = V/R
+    return current;
+  }
+
+  else
+  {
+    // Return NaN (Not a Number) if resistance is zero, indicating an open circuit or no shunt
+    return nanf("");
+  }
+}
+
+// Reads the State of Charge (SoC) from the battery
+float read_soc(I2C_HandleTypeDef* hi2c)
+{
+  uint8_t data[2];
+  float soc;
+
+  // Read two bytes from the SoC register
+  if (HAL_I2C_Mem_Read(hi2c, I2C_DEFAULT_ADDRESS << 1, REGISTER_SOC, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY) == HAL_OK)
+  {
+    // The SoC value is a 16-bit representation, where each bit corresponds to 1/256th of a percent
+    soc = ((data[0] << 8) | data[1]) / 256.0f;
+  }
+  else
+  {
+    // Return -1.0f to indicate an error if the read fails
+    soc = -1.0f;
+  }
+
+  return soc;
+}
+
+// Reads the IC version number
+uint8_t read_ic_version(I2C_HandleTypeDef* hi2c)
+{
+  uint8_t version;
+  uint8_t reg = REGISTER_VERSION; // The address of the VERSION register is 0x08
+
+  // Read one byte from the VERSION register
+  HAL_StatusTypeDef status =
+      HAL_I2C_Mem_Read(hi2c, I2C_DEFAULT_ADDRESS << 1, reg, I2C_MEMADD_SIZE_8BIT, &version, sizeof(version), HAL_MAX_DELAY);
+
+  if (status != HAL_OK)
+  {
+    // Return 0xFF to indicate an error if the read fails
+    return 0xFF;
+  }
+
+  return version;
+}
