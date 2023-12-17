@@ -116,7 +116,7 @@ float read_current(I2C_HandleTypeDef* hi2c, float resistance)
   uint16_t raw_voltage;
   float voltage, current;
 
-  // Read the raw voltage related to the current measurements
+  // Read the raw voltage related to the current measurement
   HAL_StatusTypeDef status =
       HAL_I2C_Mem_Read(hi2c, I2C_DEFAULT_ADDRESS << 1, REGISTER_VCELL, I2C_MEMADD_SIZE_8BIT, data, sizeof(data), HAL_MAX_DELAY);
 
